@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Products from './Products';
 import { Button } from 'react-bootstrap';
-import UserForm from './UserFrom';
+import UserForm from './UserForm';
 // Import jumbotron
 import JumboTronComponent from './JumboTronComponent';
 // import Rating from './Rating';
