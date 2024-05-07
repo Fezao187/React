@@ -28,7 +28,7 @@ import { getAnalytics } from "firebase/analytics";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyBwezoMVKzQyHw9E6dsZNbbam4WRCEi7jc",
+  apiKey: "",
   authDomain: "helpful-aurora-294022.firebaseapp.com",
   databaseURL: "https://helpful-aurora-294022-default-rtdb.firebaseio.com/",
   projectId: "helpful-aurora-294022",
