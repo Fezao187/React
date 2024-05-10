@@ -1,26 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-        {/* Comment */}
-      </header>
-    </div>
-  );
+import { connect } from "react-redux";
+import Cart from "./Cart";
+// subscribes to store updates and returns an object that contains a slice of the store data
+function mapStateToProps(state) {
+    return {
+        totalCost: state.totalCost,
+        productCart: state.productCart
+    }
 }
-
-export default App;
+// provides our component with access to the action creator functions that can becalled to dispatch an action to the store.
+function mapDispatchToProps(dispatch) {
+    return {
+        onAddProduct: (productName, productPrice) => dispatch({
+            type: "addProduct",
+            productData: {
+                productName: productName,
+                productPrice: productPrice
+            }
+        }),
+        onDeleteProduct: (productData) => dispatch({
+            type: "deleteProduct",
+            productData: productData
+        })
+    }
+}
+/**connect mapStateToProps and mapDispatchToProps to our Cart component 
+ * so that it has access tototalCost, onAddProduct and onDeleteProduct as props */
+var connectedComponent = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(Cart);
+export default connectedComponent;
