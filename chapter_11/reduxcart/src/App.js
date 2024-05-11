@@ -23,6 +23,7 @@ function mapDispatchToProps(dispatch) {
         })
     }
 }
+
 /**connect mapStateToProps and mapDispatchToProps to our Cart component 
  * so that it has access tototalCost, onAddProduct and onDeleteProduct as props */
 var connectedComponent = connect(
