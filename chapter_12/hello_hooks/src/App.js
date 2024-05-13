@@ -23,5 +23,4 @@ const App = () => {
   )
 }
 
-// Page 143
 export default App;
