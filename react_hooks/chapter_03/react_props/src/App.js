@@ -1,7 +1,7 @@
 import React from 'react';
 import Products from './Products';
 import { Button } from 'react-bootstrap';
-// import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Rating from './Rating';
 
 function formatName(user) {

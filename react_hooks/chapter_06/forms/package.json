@@ -1,5 +1,5 @@
 {
-  "name": "intro",
+  "name": "forms",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,9 +8,8 @@
     "@testing-library/user-event": "^13.5.0",
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",
-    "react-bootstrap": "^1.6.8",
+    "react-bootstrap": "^1.6.1",
     "react-dom": "^18.3.1",
-    "react-icons": "^5.2.1",
     "react-scripts": "5.0.1",
     "web-vitals": "^2.1.4"
   },
