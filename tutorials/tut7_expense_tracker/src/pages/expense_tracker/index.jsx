@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useAddTransaction } from "../../hooks/useAddTransaction";
 import { useGetTransactions } from "../../hooks/useGetTransaction";
 import "./styles.css";
+import { useGetUserInfo } from "../../hooks/useGetUserInfo";
 
 export const ExpenseTracker = () => {
 
     const { addTransaction } = useAddTransaction();
     const { transactions } = useGetTransactions();
-
+    const { name, profilePhoto } = useGetUserInfo();
     const [description, setDescription] = useState("");
     const [transAmount, setTransAmount] = useState(0);
     const [transType, setTransType] = useState("expense");
@@ -24,7 +25,7 @@ export const ExpenseTracker = () => {
         <>
             <div className="expense-tracker">
                 <div className="container">
-                    <h1>Expense tracker</h1>
+                    <h1>{name}'s Expense tracker</h1>
                     <div className="balance">
                         <h3>Your Balance</h3>
                         <h2>R0.00</h2>
@@ -70,6 +71,7 @@ export const ExpenseTracker = () => {
                         <button type="submit">Add Transaction</button>
                     </form>
                 </div>
+                {profilePhoto && <div className="profile"><img className="profile-photo" src={profilePhoto} /></div>}
             </div>
             <div className="transactions">
                 <h3>Transactions</h3>
@@ -78,7 +80,7 @@ export const ExpenseTracker = () => {
                         const { description, transAmount, transType } = transaction;
                         return <li>
                             <h4>{description}</h4>
-                            <p>R{transAmount} <label style={{color: transType==="expense"?"red":"green"}}>{transType}</label></p>
+                            <p>R{transAmount} <label style={{ color: transType === "expense" ? "red" : "green" }}>{transType}</label></p>
                         </li>
                     })}
                 </ul>
