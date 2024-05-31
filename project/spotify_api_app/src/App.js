@@ -4,23 +4,36 @@ import Home from "./pages/Home";
 import Favorites from "./pages/Favorites";
 import Login from "./pages/Login";
 import Signup from './pages/Signup';
+import { Container, Nav, Navbar } from 'react-bootstrap';
+import "bootstrap/dist/css/bootstrap.min.css"
 
 function App() {
   return (
-    <Router>
-      <nav>
-        <Link to="/">Home</Link>
-        <Link to="/signup/page">Sign Up</Link>
-        <Link to="/login/page">Login</Link>
-        <Link to="/favorites/page">Favorites</Link>
-      </nav>
-      <Routes>
-        <Route path='/' element={<Home />} />
-        <Route path='/login/page' element={<Login />} />
-        <Route path='/favorites/page' element={<Favorites />} />
-        <Route path="/signup/page" element={<Signup />} />
-      </Routes>
-    </Router>
+    <>
+
+      <Router>
+        <Navbar collapseOnSelect bg="dark" data-bs-theme="dark" expand="lg">
+          <Container>
+            <Navbar.Brand href="#">Spotify API App</Navbar.Brand>
+            <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+            <Navbar.Collapse id="responsive-navbar-nav">
+              <Nav className="me-auto">
+                <Nav.Link href="/">Home</Nav.Link>
+                <Nav.Link href="/signup/page">Sign Up</Nav.Link>
+                <Nav.Link href="/login/page">Login</Nav.Link>
+                <Nav.Link href="/favorites/page">Favorites</Nav.Link>
+              </Nav>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+        <Routes>
+          <Route path='/' element={<Home />} />
+          <Route path='/login/page' element={<Login />} />
+          <Route path='/favorites/page' element={<Favorites />} />
+          <Route path="/signup/page" element={<Signup />} />
+        </Routes>
+      </Router>
+    </>
   );
 }
 

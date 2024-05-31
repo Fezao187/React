@@ -2,6 +2,8 @@ import React from "react";
 import { auth, provider } from "../firebase_config";
 import { signInWithPopup } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { Button, Form, FloatingLabel } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css"
 
 function Login() {
     let navigate = useNavigate();
@@ -12,19 +14,23 @@ function Login() {
             })
     }
     return (
-        <div className="loginPage">
-            <div className="loginContainer">
-                <label for="email">Email</label>
-                <input id="email" type="email" placeholder="Enter email" />
-                <label for="password">Password</label>
-                <input id="password" type="password" placeholder="Enter password" />
-                <button className="login-btn">Login</button>
-                <hr />
-                <div className="googLog">
-                    <button className="login-with-google-btn" onClick={signInWithGoogle}>Login with Google</button>
-                </div>
-            </div>
-        </div>
+        <>
+            <Form>
+                <FloatingLabel controlId="floatingInput" label="Email address" className="mb-3">
+                    <Form.Control type="email" placeholder="name@example.com" />
+                </FloatingLabel>
+                <FloatingLabel controlId="floatingPassword" label="Password">
+                    <Form.Control type="password" placeholder="Password" />
+                </FloatingLabel>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+                <br />
+                <Button variant="primary" onClick={signInWithGoogle}>
+                    Sign In with Google
+                </Button>
+            </Form>
+        </>
     )
 }
 export default Login;
