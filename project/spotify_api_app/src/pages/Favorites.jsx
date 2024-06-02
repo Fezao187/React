@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { Container, InputGroup, FormControl, Button, Card, Row } from "react-bootstrap";
+import { Container, InputGroup, FormControl, Button, Card, Row, Spinner } from "react-bootstrap";
 import "../App.css";
 import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase_config";
 
-
+const cilentID = "db007bb47bf244e7acac715f0597cb96";
+const clientSecret = "64440dcd619d4b8096c4d858ac6ac42d";
 
 function Favorites() {
     const [searchInput, setSearchInput] = useState("");
@@ -45,6 +46,9 @@ function Favorites() {
                 setAlbums(data.items);
             }) || [];
     }
+    const clearSearch = () => {
+        window.location.reload();
+    }
     useEffect(() => {
         const getDbAlbums = async () => {
             const data = await getDocs(albumsCollectionRef);
@@ -76,8 +80,8 @@ function Favorites() {
                             }}
                             onChange={event => setSearchInput(event.target.value)}
                         />
-                        <Button onClick={searchAlbums}>Search</Button>
-                        <Button onClick={event => console.log("Clear")}>Clear</Button>
+                        <Button variant="outline-info" onClick={searchAlbums}>Search</Button>
+                        <Button variant="outline-info" onClick={clearSearch}>Clear</Button>
                     </InputGroup>
                 </Container>
                 <Container>
@@ -126,8 +130,8 @@ function Favorites() {
                 </Container>
                 <Container>
                     <Row className="mx-2 row row-cols-5">
-                        {isLoading == true ? (<div>Loading</div>) : 
-                        (
+                        {isLoading == true ? (<div className="loading"><div><Spinner animation="grow" /></div></div>) :
+                            (
                                 albumsList.map((album) => {
                                     return (
                                         <Card>
@@ -147,7 +151,7 @@ function Favorites() {
                                         </Card>
                                     )
                                 })
-                        )}
+                            )}
                     </Row>
                 </Container>
             </div>

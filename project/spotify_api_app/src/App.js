@@ -10,7 +10,6 @@ import "bootstrap/dist/css/bootstrap.min.css"
 function App() {
   return (
     <>
-
       <Router>
         <Navbar collapseOnSelect bg="dark" data-bs-theme="dark" expand="lg">
           <Container>
