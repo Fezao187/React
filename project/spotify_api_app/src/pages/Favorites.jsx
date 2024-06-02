@@ -5,8 +5,7 @@ import "../App.css";
 import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase_config";
 
-const cilentID = "db007bb47bf244e7acac715f0597cb96";
-const clientSecret = "64440dcd619d4b8096c4d858ac6ac42d";
+
 
 function Favorites() {
     const [searchInput, setSearchInput] = useState("");
