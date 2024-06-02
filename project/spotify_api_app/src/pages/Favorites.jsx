@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { Container, InputGroup, FormControl, Button, Card, Row } from "react-bootstrap";
-import { useState, useEffect } from "react";
 import "../App.css";
+import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
+import { db, auth } from "../firebase_config";
+
+
 
 function Favorites() {
     const [searchInput, setSearchInput] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [albums, setAlbums] = useState([]);
+    const [albumsList, setAlbumsList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const albumsCollectionRef = collection(db, "albums");
     useEffect(() => {
         let authParams = {
             method: "POST",
@@ -39,6 +45,22 @@ function Favorites() {
                 setAlbums(data.items);
             }) || [];
     }
+    useEffect(() => {
+        const getDbAlbums = async () => {
+            const data = await getDocs(albumsCollectionRef);
+            setIsLoading(false);
+            setAlbumsList(data.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id
+            })));
+        };
+        getDbAlbums();
+    });
+    const deleteDbAlbum = async (id) => {
+        const albumDoc = doc(db, "albums", id);
+        await deleteDoc(albumDoc);
+        console.log(albumDoc);
+    }
     return (
         <>
             <div>
@@ -62,17 +84,70 @@ function Favorites() {
                     <Row className="mx-2 row row-cols-1">
                         {console.log(albums)}
                         {albums.map((album, i) => {
+                            const saveAlbums = async () => {
+                                await addDoc(albumsCollectionRef, {
+                                    name: album.name,
+                                    image: album.images[0].url,
+                                    artists: album.artists[0].name,
+                                    release_date: album.release_date,
+                                    total_tracks: album.total_tracks,
+                                    author: {
+                                        name: auth.currentUser.displayName,
+                                        id: auth.currentUser.uid
+                                    }
+                                })
+                                let albumName = JSON.stringify(album.name);
+                                alert("Successfully added " + albumName);
+                            }
                             return (
                                 <Card>
-                                    <div className="img-size">
-                                    <Card.Img fluid src={album.images[0].url} />
+                                    <div className="alb-cont">
+                                        <div className="img-size">
+                                            <Card.Img fluid src={album.images[0].url} />
+                                        </div>
+                                        <div className="alb-bod">
+                                            <Card.Body>
+                                                <Card.Title>{album.name}</Card.Title>
+                                                <Card.Text>
+                                                    <p><strong>Artist</strong>: {album.artists[0].name}</p>
+                                                    <p><strong>Release Date</strong>: {album.release_date}</p>
+                                                    <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                            <div className="alb-btn">
+                                                <Button variant="success" onClick={saveAlbums}>Add</Button>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <Card.Body>
-                                        <Card.Title>{album.name}</Card.Title>
-                                    </Card.Body>
                                 </Card>
                             )
                         })}
+                    </Row>
+                </Container>
+                <Container>
+                    <Row className="mx-2 row row-cols-5">
+                        {isLoading == true ? (<div>Loading</div>) : 
+                        (
+                                albumsList.map((album) => {
+                                    return (
+                                        <Card>
+                                            <div className="img-size">
+                                                <Card.Img fluid src={album.image} />
+                                            </div>
+                                            <Card.Body>
+                                                <Card.Title>{album.name}</Card.Title>
+                                                <Card.Text>
+                                                    <p><strong>Artist</strong>: {album.artists}</p>
+                                                    <p><strong>Release Date</strong>: {album.release_date}</p>
+                                                    <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
+                                                </Card.Text>
+                                            </Card.Body>
+                                            <Button variant="warning">Edit</Button>
+                                            <Button variant="danger" onClick={event => deleteDbAlbum(album.id)}>Remove</Button>
+                                        </Card>
+                                    )
+                                })
+                        )}
                     </Row>
                 </Container>
             </div>
