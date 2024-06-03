@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Container, Button, Card, Row, Spinner } from "react-bootstrap";
-import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
-import { db, auth } from "../firebase_config";
+import { Container, Card, Row, Spinner } from "react-bootstrap";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../firebase_config";
 
 function Home() {
     const [albumsList, setAlbumsList] = useState([]);
@@ -35,7 +35,7 @@ function Home() {
                                             <p><strong>Artist</strong>: {album.artists}</p>
                                             <p><strong>Release Date</strong>: {album.release_date}</p>
                                             <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
-                                            <hr/>
+                                            <hr />
                                             <p>Posted by <strong>{album.author.name}</strong></p>
                                         </Card.Text>
                                     </Card.Body>
