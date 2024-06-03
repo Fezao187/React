@@ -4,16 +4,18 @@ import { Container, InputGroup, FormControl, Button, Card, Row, Spinner } from "
 import "../App.css";
 import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore";
 import { db, auth } from "../firebase_config";
+import { useNavigate } from "react-router-dom";
 
 
 
-function Favorites() {
+function Favorites({ isAuth }) {
     const [searchInput, setSearchInput] = useState("");
     const [accessToken, setAccessToken] = useState("");
     const [albums, setAlbums] = useState([]);
     const [albumsList, setAlbumsList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const albumsCollectionRef = collection(db, "albums");
+    let navigate = useNavigate();
     useEffect(() => {
         let authParams = {
             method: "POST",
@@ -64,6 +66,12 @@ function Favorites() {
         await deleteDoc(albumDoc);
         console.log(albumDoc);
     }
+
+    useEffect(() => {
+        if (!isAuth) {
+            navigate("/login/page");
+        }
+    })
     return (
         <>
             <div>
@@ -109,6 +117,7 @@ function Favorites() {
                                             <Card.Img fluid src={album.images[0].url} />
                                         </div>
                                         <div className="alb-bod">
+                                            <div>
                                             <Card.Body>
                                                 <Card.Title>{album.name}</Card.Title>
                                                 <Card.Text>
@@ -116,9 +125,8 @@ function Favorites() {
                                                     <p><strong>Release Date</strong>: {album.release_date}</p>
                                                     <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
                                                 </Card.Text>
+                                                <Button fluid variant="success" onClick={saveAlbums}>Add</Button>
                                             </Card.Body>
-                                            <div className="alb-btn">
-                                                <Button variant="success" onClick={saveAlbums}>Add</Button>
                                             </div>
                                         </div>
                                     </div>
@@ -132,23 +140,26 @@ function Favorites() {
                         {isLoading == true ? (<div className="loading"><div><Spinner animation="grow" /></div></div>) :
                             (
                                 albumsList.map((album) => {
-                                    return (
-                                        <Card>
-                                            <div className="img-size">
-                                                <Card.Img fluid src={album.image} />
-                                            </div>
-                                            <Card.Body>
-                                                <Card.Title>{album.name}</Card.Title>
-                                                <Card.Text>
-                                                    <p><strong>Artist</strong>: {album.artists}</p>
-                                                    <p><strong>Release Date</strong>: {album.release_date}</p>
-                                                    <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
-                                                </Card.Text>
-                                            </Card.Body>
-                                            <Button variant="warning">Edit</Button>
-                                            <Button variant="danger" onClick={event => deleteDbAlbum(album.id)}>Remove</Button>
-                                        </Card>
-                                    )
+                                    if (isAuth && album.author.id === auth.currentUser.uid) {
+                                        return (
+                                            
+                                                <Card>
+                                                    <div className="img-size">
+                                                        <Card.Img fluid src={album.image} />
+                                                    </div>
+                                                    <Card.Body>
+                                                        <Card.Title>{album.name}</Card.Title>
+                                                        <Card.Text>
+                                                            <p><strong>Artist</strong>: {album.artists}</p>
+                                                            <p><strong>Release Date</strong>: {album.release_date}</p>
+                                                            <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
+                                                        </Card.Text>
+                                                    </Card.Body>
+                                                    <Button variant="warning">Edit</Button>
+                                                    <Button variant="danger" onClick={event => deleteDbAlbum(album.id)}>Remove</Button>
+                                                </Card>
+                                        )
+                                    }
                                 })
                             )}
                     </Row>
