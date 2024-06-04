@@ -6,7 +6,7 @@ import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore"
 import { db, auth } from "../firebase_config";
 import { useNavigate } from "react-router-dom";
 
-// Spotify Client id
+// Spotify Client id ffdfd
 
 function Favorites({ isAuth }) {
     const [searchInput, setSearchInput] = useState("");
