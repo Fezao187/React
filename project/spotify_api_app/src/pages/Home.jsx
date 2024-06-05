@@ -17,7 +17,7 @@ function Home() {
             })));
         };
         getDbAlbums();
-    });
+    }, []);
     return (
         <Container>
             <Row className="mx-2 row row-cols-5">
