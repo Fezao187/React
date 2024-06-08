@@ -17,6 +17,7 @@ function Home() {
             })));
         };
         getDbAlbums();
+        console.log("UseEffect ran");
     }, []);
     return (
         <Container>

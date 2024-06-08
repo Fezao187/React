@@ -6,7 +6,8 @@ import { addDoc, collection, deleteDoc, doc, getDocs } from "firebase/firestore"
 import { db, auth } from "../firebase_config";
 import { useNavigate } from "react-router-dom";
 
-
+const cilentID = "db007bb47bf244e7acac715f0597cb96";
+const clientSecret = "64440dcd619d4b8096c4d858ac6ac42d";
 
 function Favorites({ isAuth }) {
     const [searchInput, setSearchInput] = useState("");
@@ -14,12 +15,6 @@ function Favorites({ isAuth }) {
     const [albums, setAlbums] = useState([]);
     const [albumsList, setAlbumsList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [isClicked, setIsClicked] = useState(false);
-    const [imgURL, setImgURL] = useState("");
-    const [albumName, setAlbumName] = useState("");
-    const [artistName, setArtistName] = useState("");
-    const [releaseDate, setReleaseDate] = useState("");
-    const [totalTracks, setTotalTracks] = useState("");
 
     const albumsCollectionRef = collection(db, "albums");
     let navigate = useNavigate();
@@ -74,6 +69,7 @@ function Favorites({ isAuth }) {
         const albumDoc = doc(db, "albums", id);
         await deleteDoc(albumDoc);
         console.log(albumDoc);
+        window.location.reload();
     }
 
     useEffect(() => {
@@ -82,11 +78,9 @@ function Favorites({ isAuth }) {
         }
     });
 
-    const handleEdit = () => {
-        setIsClicked(true);
-    }
-    const handleSave = () => {
-        setIsClicked(false);
+    const handleEdit = (id) => {
+       sessionStorage.setItem("id",id);
+       navigate(`/edit/album/${id}`);
     }
     return (
         <>
@@ -157,44 +151,23 @@ function Favorites({ isAuth }) {
                             (
                                 albumsList.map((album) => {
                                     if (isAuth && album.author.id === auth.currentUser.uid) {
-                                        if (isClicked === false) {
-                                            return (
-                                                <Card>
-                                                    <div className="img-size">
-                                                        <Card.Img fluid src={album.image} />
-                                                    </div>
-                                                    <Card.Body>
-                                                        <Card.Title>{album.name}</Card.Title>
-                                                        <Card.Text>
-                                                            <p><strong>Artist</strong>: {album.artists}</p>
-                                                            <p><strong>Release Date</strong>: {album.release_date}</p>
-                                                            <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
-                                                        </Card.Text>
-                                                    </Card.Body>
-                                                    <Button variant="warning" onClick={handleEdit}>Edit</Button>
-                                                    <Button variant="danger" onClick={event => deleteDbAlbum(album.id)}>Remove</Button>
-                                                </Card>
-                                            )
-                                        } else {
-                                            return (
-                                                <Card>
-                                                    <div className="img-size">
-                                                        <Card.Img fluid src={album.image} /><input type="text" placeholder="Enter image URL" onChange={(e) => setImgURL(e.target.value)} />
-                                                    </div>
-                                                    <Card.Body>
-                                                        <Card.Title>{album.name}</Card.Title><input type="text" placeholder="Enter album name" onChange={(e) => setAlbumName(e.target.value)} />
-                                                        <Card.Text>
-                                                            <p><strong>Artist</strong>:<input type="text" placeholder="Enter artist name" onChange={(e) => setArtistName(e.target.value)} /></p>
-                                                            <p><strong>Release Date</strong>:<input type="text" placeholder="Album release date" onChange={(e) => setReleaseDate(e.target.value)} /></p>
-                                                            <p><strong>Total Tracks</strong>:<input type="number" placeholder="Enter total tracks" onChange={(e) => setTotalTracks(e.target.value)} /></p>
-                                                        </Card.Text>
-                                                    </Card.Body>
-                                                    <Button variant="success" onClick={handleSave}>Save</Button>
-                                                </Card>
-                                            )
-                                        }
-
-
+                                        return (
+                                            <Card>
+                                                <div className="img-size">
+                                                    <Card.Img fluid src={album.image} />
+                                                </div>
+                                                <Card.Body>
+                                                    <Card.Title>{album.name}</Card.Title>
+                                                    <Card.Text>
+                                                        <p><strong>Artist</strong>: {album.artists}</p>
+                                                        <p><strong>Release Date</strong>: {album.release_date}</p>
+                                                        <p><strong>Total Tracks</strong>: {album.total_tracks}</p>
+                                                    </Card.Text>
+                                                </Card.Body>
+                                                <Button variant="warning" onClick={e => handleEdit(album.id)}>Edit</Button>
+                                                <Button variant="danger" onClick={event => deleteDbAlbum(album.id)}>Remove</Button>
+                                            </Card>
+                                        )
                                     }
                                 })
                             )}

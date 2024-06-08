@@ -71,3 +71,13 @@
 .alb-cont{
 display: flex;
 }
+
+.center1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 60px;
+  width:500px;
+  text-align: center;
+}

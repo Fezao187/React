@@ -9,6 +9,7 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import { useState } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth } from './firebase_config';
+import AlbumEdit from './pages/AlbumEdit';
 
 function App() {
   const [isAuth, setIsAuth] = useState(localStorage.getItem("isAuth"));
@@ -48,7 +49,8 @@ function App() {
           <Route path='/' element={<Home />} />
           <Route path='/login/page' element={<Login setIsAuth={setIsAuth} />} />
           <Route path='/favorites/page' element={<Favorites isAuth={isAuth} />} />
-          <Route path="/signup/page" element={<Signup setIsAuth={setIsAuth}/>} />
+          <Route path="/signup/page" element={<Signup setIsAuth={setIsAuth} />} />
+          <Route path="/edit/album/:id" element={<AlbumEdit  />} />
         </Routes>
       </Router>
     </>
